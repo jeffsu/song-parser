@@ -39,7 +39,8 @@ class BaseStrategy {
     var m = line.match(/^(verse|chorus)\s+(\d+)?/i);
     if (m) {
       return [ m[1], m[2] || 1 ];
-    } else {
+    }
+    else {
       return null;
     }
   }
@@ -68,6 +69,16 @@ class Music {
 
   // TODO
   static function isChord(ele) {
-    return true;
+    var m = ele.match(/[A|B|C|D|E|F|G]/); 
+    if (m) {
+      return true;
+    }
+    else {
+      return false; 
+    }
+      
   }
 }
+
+
+
