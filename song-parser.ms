@@ -7,10 +7,14 @@ export class SongParser {
 
   function parse(text) {
     foreach (var s in this.strategies) {
-      var stanzas = s.parse(text);
-      if (stanzas) return stanzas;
+      var song = s.parse(text);
+      if (song) {
+        foreach (var stanza in song) {
+          console.log(stanza);   
+        }
+      }
     }
-    return null;
+    return null; 
   }
 }
 
