@@ -7,8 +7,8 @@ export class SongParser {
 
   function parse(text) {
     foreach (var s in this.strategies) {
-      var verses = s.parse(text);
-      if (verses) return verses;
+      var stanzas = s.parse(text);
+      if (stanzas) return stanzas;
     }
     return null;
   }
@@ -17,26 +17,26 @@ export class SongParser {
 class BaseStrategy {
   function parse(text) {
     var lines = text.split(/\n/);
-    var currentVerse = null;
-    var verses = [];
+    var currentStanza = null;
+    var stanzas = [];
 
     foreach (var l in lines) {
-      var title = this.getVerseTitle(l);
+      var title = this.getStanzaTitle(l);
       if (title) {
-        currentVerse = this.newVerse(title[0], title[1]);
-        verses.push(currentVerse);
+        currentStanza = this.newStanza(title[0], title[1]);
+        stanzas.push(currentStanza);
 
-      } else if (currentVerse) {
+      } else if (currentStanza) {
         var lineType = Music.isChordLine(l) ? 'c' : 'l';
-        currentVerse.lines.push([ lineType, l ]);
+        currentStanza.lines.push([ lineType, l ]);
       }
     }
 
-    return verses.length ? verses : null;
+    return stanzas.length ? stanzas : null;
   }
 
-  function getVerseTitle(line) {
-    var m = line.match(/^(verse|chorus)\s+(\d+)?/i);
+  function getStanzaTitle(line) {
+    var m = line.match(/^(intro|verse|chorus|bridge|instrumental)\s+(\d+)?/i);
     if (m) {
       return [ m[1], m[2] || 1 ];
     }
@@ -45,7 +45,7 @@ class BaseStrategy {
     }
   }
 
-  function newVerse(type, number) {
+  function newStanza(type, number) {
     number = number || 1; 
     return {
       type:   type,
