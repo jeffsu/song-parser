@@ -31,8 +31,13 @@ class BaseStrategy {
         stanzas.push(currentStanza);
 
       } else if (currentStanza) {
-        var lineType = Music.isChordLine(l) ? 'c' : 'l';
-        currentStanza.lines.push([ lineType, l ]);
+          if (Music.isBlankLine(l)) {
+            continue;  
+          }
+          else {
+            var lineType = Music.isChordLine(l) ? 'c' : 'l';
+            currentStanza.lines.push([ lineType, l ]);
+          }
       }
     }
 
@@ -60,6 +65,16 @@ class BaseStrategy {
 }
 
 class Music {
+  static function isBlankLine(line) {
+    var m = line.match(/^\s*$/); 
+    if (m) {
+      return true; 
+    }
+    else  {
+      return false; 
+    }
+  }
+
   static function isChordLine(line) {
     var elements = line.split(/\s+/);
     if (elements.length == 0) return false;
