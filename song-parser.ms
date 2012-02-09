@@ -90,7 +90,7 @@ class Music {
 
   // TODO
   static function isChord(ele) {
-    var m = ele.match(/[A-G][b\#]?(maj|min|dim|aug)?(\/[A-Z][b\#]?)?/); 
+    var m = ele.match(/[A-G][b\#]?(maj|min|dim|aug)?(2|4|5|6|7|9|11|13)?(\/[A-Z][b\#]?)?/); 
     if (m) {
       return true;
     }
