@@ -25,6 +25,7 @@ class BaseStrategy {
     var stanzas = [];
 
     foreach (var l in lines) {
+      l = l.trim();
       var title = this.getStanzaTitle(l);
       if (title) {
         currentStanza = this.newStanza(title[0], title[1]);
@@ -89,7 +90,7 @@ class Music {
 
   // TODO
   static function isChord(ele) {
-    var m = ele.match(/(A|B|C|D|E|F|G)(\s*|\n)/); 
+    var m = ele.match(/[A-G][b\#]?(maj|min|dim|aug)?(\/[A-Z][b\#]?)?/); 
     if (m) {
       return true;
     }
