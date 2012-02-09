@@ -80,6 +80,7 @@ class Music {
     if (elements.length == 0) return false;
 
     foreach (var e in elements) {
+     // console.log(e); 
       if (!this.isChord(e)) return false;
     }
 
@@ -88,7 +89,7 @@ class Music {
 
   // TODO
   static function isChord(ele) {
-    var m = ele.match(/[A|B|C|D|E|F|G]/); 
+    var m = ele.match(/(A|B|C|D|E|F|G)(\s*|\n)/); 
     if (m) {
       return true;
     }
