@@ -102,8 +102,7 @@ class NoTitleStrategy {
     }        
   
     return stanzas.length ? stanzas : null
-  }
- 
+  } 
   function newStanza(type, number) {
     number = number || 1; 
     return {

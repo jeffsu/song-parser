@@ -1,7 +1,7 @@
 export class SongParser {
   function initialize() {
     this.strategies = [
-      new BaseStrategy(), new NoTitleStrategy()
+      new BaseStrategy()
     ];
   }
 
@@ -71,47 +71,13 @@ class BaseStrategy {
   }
 }
 
-class NoTitleStrategy {
+// Only first verse has chords, means all other verses share same chords
+class FirstVerseStrategy {
   function parse(text) {
-    var lines = text.split(/\n/); 
-    var stanzas = []; 
-    var currentStanza = null; 
-    var verseNum = 1; 
-
-    foreach (var l in lines) {
-      if (Music.isBlankLine(l)) {
-        if(currentStanza == null) {
-          continue; 
-        } 
-        else {
-          currentStanza = this.newStanza("Verse", verseNum);
-          verseNum++;  
-          stanzas.push(currentStanza); 
-        }            
-      }
-     else {
-       if (!currentStanza) {
-         currentStanza = this.newStanza("Verse", verseNum); 
-         verseNum++; 
-         stanzas.push(currentStanza); 
-       }
-       var lineType = Music.isChordLine(l) ? 'c' : 'l'; 
-       currentStanza.lines.push([ lineType, l]); 
-     }   
-
-    }        
-  
-    return stanzas.length ? stanzas : null
+        
   }
- 
-  function newStanza(type, number) {
-    number = number || 1; 
-    return {
-      type:   type,
-      number: number,
-      lines:  []
-    };
-  }
+
+
 
 }
 
