@@ -20,7 +20,6 @@ export class SongParser {
 
 class BaseStrategy {
   function parse(text) {
-    console.log("Base Strategy");
     var lines = text.split(/\n/);
     var currentStanza = null;
     var stanzas = [];
@@ -74,58 +73,36 @@ class BaseStrategy {
 
 class NoTitleStrategy {
   function parse(text) {
-    console.log("Synthesis Strategy");
     var lines = text.split(/\n/); 
     var stanzas = []; 
     var currentStanza = null; 
     var verseNum = 1; 
-    var stanzaDone = true;   
 
     foreach (var l in lines) {
-      l = l.trim()
-      if(Music.isBlankLine(l)) {
-        if (stanzaDone) { 
-          continue;  
-        }
-        else {
-          currentStanza = null;
-          stanzaDone = true;    
-        }
-      }
-      else {
-        if (!currentStanza) {
-          var stanzaType = this.getStanzaTitle(l);  
-          if (!stanzaType) { 
-            currentStanza = this.newStanza("Verse", verseNum);
-            verseNum++; 
-          }   
-          else {     
-            currentStanza = this.newStanza(stanzaType[0], stanzaType[1]);
-            stanzaDone = false;
-            stanzas.push(currentStanza); 
-            continue;  
-          }
-          stanzas.push(currentStanza); 
+      if (Music.isBlankLine(l)) {
+        if(currentStanza == null) {
+          continue; 
         } 
-        var lineType = Music.isChordLine(l) ? 'c' : 'l'; 
-        currentStanza.lines.push([lineType, l ]); 
-        stanzaDone = false;   
+        else {
+          currentStanza = this.newStanza("Verse", verseNum);
+          verseNum++;  
+          stanzas.push(currentStanza); 
+        }            
       }
+     else {
+       if (!currentStanza) {
+         currentStanza = this.newStanza("Verse", verseNum); 
+         verseNum++; 
+         stanzas.push(currentStanza); 
+       }
+       var lineType = Music.isChordLine(l) ? 'c' : 'l'; 
+       currentStanza.lines.push([ lineType, l]); 
+     }   
+
     }        
   
     return stanzas.length ? stanzas : null
   }
-
-  function getStanzaTitle(line) {
-    var m = line.match(/^(intro|verse|chorus|bridge|instrumental)\s+(\d+)?/i);
-    if (m) {
-      return [ m[1], m[2] || 1 ];
-    }
-    else {
-      return null;
-    }
-  }
-
  
   function newStanza(type, number) {
     number = number || 1; 
@@ -154,7 +131,7 @@ class Music {
     if (elements.length == 0) return false;
 
     foreach (var e in elements) {
-    // console.log(e + "h"); 
+     // console.log(e); 
       if (!this.isChord(e)) return false;
     }
 
@@ -163,7 +140,7 @@ class Music {
 
   // TODO
   static function isChord(ele) {
-    var m = ele.match(/^[A-G][b\#]?(maj|min|dim|aug|m)?(2|4|5|6|7|9|11|13)?(\/[A-Z][b\#]?)?[\t\n]?$/); 
+    var m = ele.match(/^[A-G][b\#]?(maj|min|dim|aug|m)?(2|4|5|6|7|9|11|13)?(\/[A-Z][b\#]?)?$/); 
     if (m) {
       return true;
     }
