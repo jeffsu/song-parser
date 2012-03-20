@@ -5,7 +5,7 @@
 
 ## To run
 
-    node index.js
+    node begin.js
 
 ## TODO
 
