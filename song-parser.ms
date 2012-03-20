@@ -1,21 +1,22 @@
 export class SongParser {
   function initialize() {
     this.strategies = [
-      new BaseStrategy(), new NoTitleStrategy()
+       new NoTitleStrategy()
     ];
   }
 
   function parse(text) {
-    foreach (var s in this.strategies) {
+      var s = new NoTitleStrategy; 
       var song = s.parse(text);
       if (song) {
         foreach (var stanza in song) {
           console.log(stanza);   
         }
+        return song; 
       }
-    }
-    return null; 
+    return null;     
   }
+
 }
 
 class BaseStrategy {
@@ -161,7 +162,7 @@ class Music {
     return true;
   }
 
-  // TODO
+ 
   static function isChord(ele) {
     var m = ele.match(/^[A-G][b\#]?(maj|min|dim|aug|m)?(2|4|5|6|7|9|11|13)?(\/[A-Z][b\#]?)?[\t\n]?$/); 
     if (m) {
