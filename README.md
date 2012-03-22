@@ -5,7 +5,8 @@
 
 ## To run
 
-    node index.js
+    node begin.js
+    In a browser: http://localhost:8080
 
 ## TODO
 
