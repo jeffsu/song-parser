@@ -1,11 +1,7 @@
-require('mochiscript'); 
-
 var fs = require('fs');
 var http = require('http');
 var url = require('url'); 
  
-var SongParser = require('./song-parser'); 
-var parser = new SongParser(); 
 
 function start(route, handle) {
   function onRequest(request, response) {
@@ -16,12 +12,24 @@ function start(route, handle) {
     var songtext = "";
     request.setEncoding("utf8"); 
 
+    var first = true; 
+    var counter = 0;  
     request.addListener("data", function(songtextchunk) {
-      songtext += songtextchunk; 
+      counter++; 
+      console.log(songtextchunk + "\n"); 
+      if (first) {
+        songtextchunk = songtextchunk.replace("text=", "");
+        first = false;  
+      }
+      songtextchunk = songtextchunk.split("+").join(" "); 
+      songtextchunk = songtextchunk.split("%0D%0A").join("\n");
+      songtext += songtextchunk 
     }); 
 
     request.addListener("end", function() {
-      route(handle, pathname, response, songtext); 
+      console.log("Counter: " + counter); 
+      route(handle, pathname, response, songtext);
+      first = true;  
     }); 
 
     fs.readFile('./parser.html', function (error, content) {
